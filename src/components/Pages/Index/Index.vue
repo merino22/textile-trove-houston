@@ -66,11 +66,11 @@
           <div class="grid lg:grid-cols-2 sm:grid-cols-1 gap-4 pb-5">
             <div class="grid grid-cols-1">
               <label for="email" :class="{ [`text-red-400`]: nameError }">Name <span v-if="nameError "> - {{ msg.name }}</span></label>
-              <input v-model="name" maxlength="50" v-on:focus="validateNameField(name)" placeholder="Your Name*" name="name" type="text" class="bg-zinc-500 placeholder:text-gray-300 placeholder:italic"/>
+              <input v-model="name" maxlength="50" v-on:blur="validateNameField(name)" placeholder="Your Name*" name="name" type="text" class="bg-zinc-500 placeholder:text-gray-300 placeholder:italic"/>
             </div>
             <div class="grid grid-cols-1">
               <label for="email" :class="{ [`text-red-400`]: error }">E-mail <span v-if="error "> - {{ msg.email }}</span></label>
-              <input v-model="email" name="email" type="text" v-on:focus="runEmailValidations(email)" class="bg-zinc-500 placeholder:italic placeholder:text-gray-300" placeholder="Your E-mail*" maxlength="50"/>
+              <input v-model="email" name="email" type="text" v-on:blur="runEmailValidations(email)" class="bg-zinc-500 placeholder:italic placeholder:text-gray-300" placeholder="Your E-mail*" maxlength="50"/>
             </div>
           </div>
           <div class="grid grid-cols">
@@ -132,23 +132,27 @@ export default {
     Notification
   },
   watch:{
-    email(value) {
-      this.email = value;
-      this.runEmailValidations(value);
-    },
-    name(value) {
-      this.name = value;
-      this.validateNameField(value);
-    }
+    // email(value) {
+    //   this.email = value;
+    //   this.runEmailValidations(value);
+    // },
+    // name(value) {
+    //   this.name = value;
+    //   this.validateNameField(value);
+    // }
   },
   methods: {
     sendEmail() {
+
       emailjs.sendForm('service_f8x7s1s', 'template_nrvayeb', this.$refs.myForm, '4d3uDFK1Xwjpj_LSe')
         .then((result) => {
           console.log('SUCCESS!', result.text)
         }, (error) => {
           console.log('FAILED!', error.text)
         })
+      this.name = '';
+      this.email = '';
+      this.message = '';
     },
     runEmailValidations(value) {
       this.validateEmail(value);
@@ -199,12 +203,9 @@ export default {
         }, 2000);
     },
     checkSubmit(name, email) {
-      if (this.msg['email'] === '' && this.msg['name'] === '') {
+      if (this.runEmailValidations(email) && this.validateNameField(name)) {
         this.sendEmail();
         this.showSuccessNotification();
-        this.name = '';
-        this.email = '';
-        this.message = '';
         this.msg['email'] = '';
         this.msg['name'] = '';
       }
