@@ -199,7 +199,7 @@ export default {
         }, 2000);
     },
     checkSubmit(name, email) {
-      if (this.runEmailValidations(email) && this.validateNameField(name)) {
+      if (this.msg['email'] === '' && this.msg['name'] === '') {
         this.sendEmail();
         this.showSuccessNotification();
         this.name = '';
