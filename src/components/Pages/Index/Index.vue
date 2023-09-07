@@ -70,7 +70,7 @@
             </div>
             <div class="grid grid-cols-1">
               <label for="email" :class="{ [`text-red-400`]: error }">E-mail <span v-if="error "> - {{ msg.email }}</span></label>
-              <input v-model="email" name="email" type="text" v-on:blur="runEmailValidations(email)" class="bg-zinc-500 placeholder:italic placeholder:text-gray-300" placeholder="Your E-mail*" maxlength="50"/>
+              <input v-model="email" name="email" type="text" v-on:focus="runEmailValidations(email)" class="bg-zinc-500 placeholder:italic placeholder:text-gray-300" placeholder="Your E-mail*" maxlength="50"/>
             </div>
           </div>
           <div class="grid grid-cols">
